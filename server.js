@@ -8,7 +8,10 @@ const PORT = process.env.PORT || 3000;
 app.use(express.static(__dirname));
 
 // Route all requests to index.html
-// Route removed to prevent masking of 404s for static files
+// Explicitly serve index.html for the root path
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 app.listen(PORT, () => {
     console.log(`Portfolio server running on port ${PORT}`);
