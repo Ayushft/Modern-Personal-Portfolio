@@ -5,13 +5,26 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Serve static files
-app.use(express.static(__dirname));
+// Serve static files from the current working directory (better for Vercel)
+app.use(express.static(process.cwd()));
 
-// Route all requests to index.html
 // Explicitly serve index.html for the root path
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    res.sendFile(path.join(process.cwd(), 'index.html'));
 });
+
+// Fallback for script.js
+app.get('/script.js', (req, res) => {
+    res.sendFile(path.join(process.cwd(), 'script.js'));
+});
+
+// Fallback for styles.css
+app.get('/styles.css', (req, res) => {
+    res.sendFile(path.join(process.cwd(), 'styles.css'));
+});
+
+// Avoid 404s for favicon
+app.get('/favicon.ico', (req, res) => res.status(204).end());
 
 app.listen(PORT, () => {
     console.log(`Portfolio server running on port ${PORT}`);
