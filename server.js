@@ -23,7 +23,12 @@ app.get('/styles.css', (req, res) => {
     res.sendFile(path.join(process.cwd(), 'styles.css'));
 });
 
-// Avoid 404s for favicon
+// Explicitly serve favicon.png
+app.get('/favicon.png', (req, res) => {
+    res.sendFile(path.join(process.cwd(), 'favicon.png'));
+});
+
+// Avoid 404s for favicon.ico (browsers still request this sometimes)
 app.get('/favicon.ico', (req, res) => res.status(204).end());
 
 app.listen(PORT, () => {
